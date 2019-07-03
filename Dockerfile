@@ -1,6 +1,4 @@
-FROM fabric8/java-jboss-openjdk8-jdk
+FROM adoptopenjdk/openjdk8-openj9:alpine-jre
 EXPOSE 8080
-ENV JAVA_OPTIONS=-Dquarkus.http.host=0.0.0.0
-COPY target/lib/* /deployments/lib/
-COPY target/*-runner.jar /deployments/app.jar
-ENTRYPOINT [ "/deployments/run-java.sh" ]
+ADD target/*.jar app.jar
+ENTRYPOINT [ "java", "-jar", "app.jar" ]

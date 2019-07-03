@@ -2,22 +2,23 @@ package com.atomist.rest;
 
 import com.atomist.domain.Book;
 import com.atomist.service.BookService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Path("/book")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@RestController
 public class BookResource {
-    @Inject
-    private BookService bookService;
+    private final BookService bookService;
 
-    @GET
+    public BookResource(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping("/book")
     public List<BookJson> getBooks() {
         return bookService.getBooks().stream()
                 .map(b -> {
@@ -28,8 +29,8 @@ public class BookResource {
                 }).collect(Collectors.toList());
     }
 
-    @POST
-    public void createBook(BookJson book) {
+    @PostMapping("/book")
+    public void createBook(@RequestBody BookJson book) {
         bookService.saveBook(new Book(null, book.getName()));
     }
 }

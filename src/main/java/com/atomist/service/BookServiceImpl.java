@@ -2,15 +2,18 @@ package com.atomist.service;
 
 import com.atomist.domain.Book;
 import com.atomist.persistence.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.List;
 
-@ApplicationScoped
+@Service
 public class BookServiceImpl implements BookService {
-	@Inject
-	private BookRepository bookRepository;
+	private final BookRepository bookRepository;
+
+	public BookServiceImpl(BookRepository bookRepository) {
+		this.bookRepository = bookRepository;
+	}
 
 	@Override
 	public void saveBook(Book book) {

@@ -1,20 +1,23 @@
 package com.atomist.persistence;
 
 import com.atomist.domain.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ApplicationScoped
+@Repository
 @Transactional
 public class BookRepositoryJpaImpl implements BookRepository {
-	@Inject
-	EntityManager entityManager;
+	private final EntityManager entityManager;
+
+	public BookRepositoryJpaImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	@Override
 	public void saveBook(Book book) {
